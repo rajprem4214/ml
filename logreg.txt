@@ -1,0 +1,25 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+col = ['x1' , 'x2' , 'y']
+df = pd.read_csv('Student-University(For Logistic Regression Program).csv' , names=col)
+df.head()
+
+x = df.iloc[:,:-1]
+y = df.iloc[: , -1]
+print(df.isnull().sum())
+
+# Normalize numerical columns
+df[['x1', 'x2']] = (df[['x1', 'x2']] - df[['x1', 'x2']].mean()) / df[['x1', 'x2']].std()
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+X_train , X_test , y_train,y_test = train_test_split(x,y)
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+predictions = model.predict(X_test)
+# Evaluate the model
+accuracy = accuracy_score(y_test, predictions)
+print("Accuracy:", accuracy)
